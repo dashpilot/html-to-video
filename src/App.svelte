@@ -3,15 +3,20 @@
 <div class="wrap">
   
   <div id="stage" class="stage">
-  <div id="slide">hello</div>
+  <div id="slide" class:playing="{playing === true}">hello</div>
   </div>
   
   <div class="btn-group w-100">
-  <button class="btn btn-outline-dark" on:click={grabFrame}>grab frame</button>
-  <button class="btn btn-outline-dark" on:click={recordVideo}>record video</button>
-  <button class="btn btn-outline-dark" on:click={stopRecording}>stop recording</button>
-  <button class="btn btn-outline-dark" on:click={log}>log</button>
-  <button class="btn btn-outline-dark" on:click={() => showExport = true}>render video</button>
+    
+    {#if playing}
+    <button class="btn btn-outline-dark" on:click={stop}><Fa icon={faStop} /> stop</button>
+ 
+  {:else}
+  <button class="btn btn-outline-dark" on:click={play}><Fa icon={faPlay} /> play</button>
+  {/if}
+ 
+  <button class="btn btn-outline-dark" on:click={recordVideo} class:recording="{recording === true}"><Fa icon={faCircle} /> record video</button>
+  <button class="btn btn-outline-dark" on:click="{() => showExport = true}"><Fa icon={faDownload} /> export video</button>
   </div>
   
   <div id="result"></div>
@@ -21,19 +26,35 @@
   <ExportVideo bind:frames={frames} bind:showExport={showExport} />
     {/if}
 
-
-  
 </div>
 
 
 <script>
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob } from 'html-to-image';
+import Fa from 'svelte-fa/src/fa.svelte'
+import { faPlay, faStop, faCircle, faDownload } from '@fortawesome/free-solid-svg-icons/index.js'
+
 import ExportVideo from './components/ExportVideo.svelte'
 
 let interval;
 let showExport = false;
 let frames = [];
+let playing = false;
+let recording = false;
+
+function play(){
+ playing = true;
+}
+
+function stop(){
+  playing = false;
+  if(recording){
+    clearInterval(interval);
+    recording = false;
+  }
+}
+
 
 function grabFrame(){
   var node = document.getElementById('stage');
@@ -51,14 +72,20 @@ function grabFrame(){
 }
 
 function recordVideo(){
+  recording = true;
+  play();
+  
  interval = setInterval(function() {
    // method to be executed;
    grabFrame();
  }, 100); // 10 fps
  
  setTimeout(()=>{
+   recording = false;
    clearInterval(interval);
- }, 2000)
+   stop();
+   
+ }, 4000)
 }
 
 function stopRecording(){
@@ -74,10 +101,10 @@ function log(){
 
 
 <style>
-.wrap{
-  width: 720px;
-  margin: 20px auto;
-}
+  .wrap{
+    width: 720px;
+    margin: 20px auto;
+  }
   .stage{
     width: 720px;
     height: 405px;
@@ -87,30 +114,6 @@ function log(){
     overflow: hidden;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-  }
-  
- 
-  
-  #slide {
-      position: absolute;
-      top: 300px;
-      left: -100px;
-      padding: 10px;
-      background: #B8392A;
-      color: white;
-      font-weight: bold;
-      -webkit-animation: slide 0.5s forwards;
-      -webkit-animation-delay: 5s;
-      animation: slide 5s forwards;
-      animation-delay: 2s;
-  }
-  
-  @-webkit-keyframes slide {
-      100% { left: 0; }
-  }
-  
-  @keyframes slide {
-      100% { left: 0; }
   }
   
   .btn-group .btn{
@@ -123,5 +126,37 @@ function log(){
   .btn-group .btn:last-child{
     border-top-right-radius: 0;
   }
+  
+  
+  
+  /* animations */
+
+  #slide {
+      position: absolute;
+      top: 300px;
+      left: -100px;
+      padding: 10px;
+      background: #B8392A;
+      color: white;
+      font-weight: bold;
+  }
+  
+  #slide.playing {
+    -webkit-animation: slide 0.5s forwards;
+    animation: slide 5s forwards;
+  }
+  
+  @-webkit-keyframes slide {
+    100% {
+      left: 0;
+    }
+  }
+  
+  @keyframes slide {
+    100% {
+      left: 0;
+    }
+  }
+
 
 </style>
