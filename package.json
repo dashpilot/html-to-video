@@ -1,0 +1,22 @@
+{
+  "name": "videomaker",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.2",
+    "svelte": "^3.49.0",
+    "vite": "^3.1.0"
+  },
+  "dependencies": {
+    "html-to-image": "^1.10.8",
+    "html2canvas": "^1.4.1",
+    "ken-burns-carousel": "^0.2.5",
+    "ken-burns-slideshow": "^1.1.3"
+  }
+}
