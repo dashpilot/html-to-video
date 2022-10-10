@@ -1,6 +1,6 @@
 
 
-<div class="wrap mt-5">
+<div class="wrap mt-3">
   
  
   <div id="stage" class="stage">
