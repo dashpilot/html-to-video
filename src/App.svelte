@@ -11,14 +11,14 @@
   <div class="btn-group w-100">
     
     {#if playing}
-    <button class="btn btn-outline-dark" on:click={stop}><Fa icon={faStop} /> stop</button>
+    <button class="btn btn-outline-dark" on:click={stop}><Fa icon={faStop} /><span class="caption"> stop</span></button>
  
   {:else}
-  <button class="btn btn-outline-dark" on:click={play}><Fa icon={faPlay} /> play</button>
+  <button class="btn btn-outline-dark" on:click={play}><Fa icon={faPlay} /><span class="caption"> play</span></button>
   {/if}
  
-  <button class="btn btn-outline-dark" on:click={recordVideo} class:recording="{recording === true}"><Fa icon={faCircle} /> record video</button>
-  <button class="btn btn-outline-dark" on:click="{() => showExport = true}"><Fa icon={faDownload} /> export video</button>
+  <button class="btn btn-outline-dark" on:click={recordVideo} class:recording="{recording === true}"><Fa icon={faCircle} /><span class="caption"> record video</span></button>
+  <button class="btn btn-outline-dark" on:click="{() => showExport = true}"><Fa icon={faDownload} /><span class="caption"> export video</span></button>
   </div>
   
   <div id="result"></div>
@@ -129,15 +129,30 @@ function log(){
     border-top-right-radius: 0;
   }
   
+  @media only screen and (max-width: 600px) {
+    .wrap{
+      width: 320px;
+    }
+    .stage{
+      width: 320px;
+      height: 180px;
+    }
+    
+    .caption{
+      display: none;
+    }
+  }
   
   
   /* animations */
 
   #slide {
       position: absolute;
-      top: 300px;
+      bottom: 10%;
       left: -100px;
       padding: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
       background: #B8392A;
       color: white;
       font-weight: bold;
