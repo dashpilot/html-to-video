@@ -1,10 +1,12 @@
 
 
-<div class="wrap">
+<div class="wrap mt-5">
   
+ 
   <div id="stage" class="stage">
   <div id="slide" class:playing="{playing === true}">hello</div>
   </div>
+
   
   <div class="btn-group w-100">
     
