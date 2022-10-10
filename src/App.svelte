@@ -131,11 +131,11 @@ function log(){
   
   @media only screen and (max-width: 600px) {
     .wrap{
-      width: 375px;
+      width: 360px;
     }
     .stage{
-      width: 375px;
-      height: 211px;
+      width: 360px;
+      height: 203px;
     }
     
     .caption{
