@@ -9,9 +9,11 @@
 	  <div class="modal-body">
 	
 	
+		{#if status !== 'done'}
 			<div class="text-center" id="videotape">
 			<img src="img/videotape.png" class="img-fluid w-50 videotape" />
 		</div>
+		{/if}
 	
 			<div id="video-preview" class="ratio ratio-16x9" style="display: none">
 			<video id="output-video" controls width="752" height="423"></video>
@@ -21,14 +23,30 @@
 	  <div class="modal-footer">
 		  
 		  
-		  {#if converting}
+		  {#if status == 'recording' || status == 'rendering'}
 		 <img src="img/loading.png" class="spinner spin" />
+		 {/if}
+		 
+		 {#if status == 'recording' || status == 'rendering'}
 		  <span id="message" class="message me-auto">{message}</span>
+		  
+		  {/if}
+		  
+		  {#if status == 'recording'}
+		  <a class="btn btn-danger" on:click={stopRecording}>Cancel</a>
+		  {/if}
+		  
+		  {#if status == 'rendering'}
+			<a class="btn btn-outline-dark disabled" style="border: 1px solid transparent;">@{framerate}fps</a>
 		  {/if}
 		
-		 
+		
 		  <a class="btn btn-success" id="download" download="myvid.mp4" style="display: none;">Download</a>
-	<button id="start-btn" class="btn btn-primary" on:click={recordVideo}>{@html start}</button> 
+		
+		  
+		  {#if status == 'idle'}
+			<button id="start-btn" class="btn btn-primary" on:click={recordVideo}>Generate Video</button> 
+		  {/if}
 		
 	  </div>
 	</div>
@@ -40,25 +58,20 @@
   
   <script>
  
-  
   import * as htmlToImage from 'html-to-image';
   import { toPng, toJpeg, toBlob } from 'html-to-image';
-  
-  
   
 	export let showExport;
 	export let playing;
 	export let duration;
 	export let framerate;
 	
+	let status = "idle";
 	let message = "";
-	let start = "Generate Video"
-	let converting = false;
-	let done = false;
 	
-	let recording = false;
 	let frames = [];
 	let interval;
+	let timeout;
 	
 	
 	function grabFrame(){
@@ -80,37 +93,35 @@
 		
 		console.log("duration: "+duration+", framerate: "+framerate)
 		
-	message = 'Recording...';	
-		
-	  playing = true;
-	  recording = true;
-	  converting = true;
-	  start = ' &nbsp;Converting...'
-	  
-	 interval = setInterval(function() {
-	   // method to be executed;
-	   grabFrame();
-	 }, Math.round(1000/framerate)); // fps
-	 
-	 setTimeout(()=>{
-		 
-	   recording = false;
-	   playing = false;
-	   clearInterval(interval);
-	   
-	   
-	   image2video();
-	   
-	   
-	 }, duration)
+		status = 'recording'
+		message = 'Recording...';	
+	
+		playing = true;
+	  	
+	 	interval = setInterval(function() {
+	   	// method to be executed;
+	   	grabFrame();
+	 	}, Math.round(1000/framerate)); // fps
+	 	
+	 	timeout = setTimeout(()=>{
+		 	
+		 	playing = false;
+	   	clearInterval(interval);
+	   	image2video();
+	   	
+	 	}, duration)
 	}
 	
 	function stopRecording(){
+		
 	   clearInterval(interval);
+	   clearTimeout(timeout);
+	   playing = false;
+	   status = 'idle'
+	   frames = [];
+	   
 	}
 
-
-	
 	const {
 	  createFFmpeg,
 	  fetchFile
@@ -124,32 +135,18 @@
 
 	const image2video = async () => {
 		
-	
-	    const video = document.getElementById('output-video');
-		video.style.display = 'none';
+		status = "rendering";
+		message = 'Rendering...';
 		
+		const video = document.getElementById('output-video');
 		const video_preview = document.getElementById('video-preview');
-		
-		const videotape = document.getElementById('videotape');
-		
 		const download = document.getElementById('download');
 		download.style.display = 'none';
 		
-		const start_btn = document.getElementById('start-btn');
 		
-		
-		
-	
-
-	  // message = 'Loading images...';
-	  
 	  if(!ffmpeg.isLoaded()){
 		  await ffmpeg.load();
 	  }
-	  
-	  
-	  message = 'Rendering...';
-	  // ffmpeg.FS('writeFile', 'audio.ogg', await fetchFile('assets/triangle/audio.ogg'));
 	  
 	  var i = 0;
 	  for (const frame of frames) {
@@ -159,23 +156,14 @@
 		  i++;
 		  console.log(i)
 	  }
-
-	  
-	  message = 'Creating video... This may take a while.';
+	
 	  await ffmpeg.run('-framerate', ''+framerate+'', '-pattern_type', 'glob', '-i', '*.jpg', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', 'out.mp4');
 	   
 	  // -framerate -> set input framerate
 	  // -r -> set output framerate
+	
 	  
-	  
-	  //  '-i', 'audio.ogg', '-c:a', 'copy', '-shortest',
-	  
-	  
-	  // '-filter_complex', "scale=-2:2*ih,zoompan=z='min(zoom+0.0015,1.5)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',scale=-2:450",
-	  
-
 	  const data = ffmpeg.FS('readFile', 'out.mp4');
-	  //ffmpeg.FS('unlink', 'audio.ogg')
 	  var i = 0;
 	  for (const frame2 of frames) {
 	    const num = `00${i}`.slice(-3);
@@ -186,28 +174,30 @@
 	  video.src = URL.createObjectURL(new Blob([data.buffer], {
 		type: 'video/mp4'
 	  }));
-	  video.style.display = 'block';
 	  
 	  video_preview.style.display = 'block';
-	  videotape.style.display = 'none';
+
 	  
 	  download.href = URL.createObjectURL(new Blob([data.buffer], {
 		  type: 'video/mp4'
 		}));
 		
-		download.style.display = 'block';
-		start_btn.style.display = 'none';
-		
-	  
+	  download.style.display = 'block';
+	
+	  status = "done";
 	  message = 'Done!'
-	  start = 'Generate Video'
-	  converting = false;
-	  done = true;
-			  
+	  
+	  frames = [];
 
 	}
 
-
+	// this doesn't work currently
+	function stopRendering(){
+		console.log('stopped rendering')
+		ffmpeg.exit()
+		status = 'idle'
+		frames = [];
+	}
 
   </script>
   

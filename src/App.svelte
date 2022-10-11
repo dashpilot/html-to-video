@@ -11,23 +11,20 @@
   <div class="btn-group w-100">
     
     {#if playing}
-    <button class="btn btn-outline-dark" on:click={stop}><Fa icon={faStop} /><span class="caption"> stop</span></button>
- 
-  {:else}
-  <button class="btn btn-outline-dark" on:click={play}><Fa icon={faPlay} /><span class="caption"> play</span></button>
-  {/if}
- 
- 
-  <button class="btn btn-outline-dark" on:click="{() => showExport = true}"><Fa icon={faDownload} /><span class="caption"> export video</span></button>
-  </div>
-  
-  <div id="result"></div>
-  
-  
-  {#if showExport}
-  <div transition:fade>
-  <ExportVideo bind:playing={playing} bind:duration={duration} bind:framerate={framerate} bind:showExport={showExport} />
-  </div>
+      <button class="btn btn-outline-dark" on:click={stop}><Fa icon={faStop} /><span class="caption"> stop</span></button>
+    {:else}
+      <button class="btn btn-outline-dark" on:click={play}><Fa icon={faPlay} /><span class="caption"> play</span></button>
+    {/if}
+   
+    <button class="btn btn-outline-dark" on:click="{() => showExport = true}"><Fa icon={faDownload} /><span class="caption"> export video</span></button>
+    </div>
+    
+    <div id="result"></div>
+    
+    {#if showExport}
+      <div transition:fade>
+      <ExportVideo bind:playing={playing} bind:duration={duration} bind:framerate={framerate} bind:showExport={showExport} />
+      </div>
     {/if}
 
 </div>
