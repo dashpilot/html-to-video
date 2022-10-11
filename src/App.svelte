@@ -25,7 +25,9 @@
   
   
   {#if showExport}
+  <div transition:fade>
   <ExportVideo bind:playing={playing} bind:duration={duration} bind:showExport={showExport} />
+  </div>
     {/if}
 
 </div>
@@ -35,6 +37,8 @@
 
 import Fa from 'svelte-fa/src/fa.svelte'
 import { faPlay, faStop, faCircle, faDownload } from '@fortawesome/free-solid-svg-icons/index.js'
+
+import { fade } from 'svelte/transition';
 
 import ExportVideo from './components/ExportVideo.svelte'
 
