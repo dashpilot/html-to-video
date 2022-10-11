@@ -26,7 +26,7 @@
   
   {#if showExport}
   <div transition:fade>
-  <ExportVideo bind:playing={playing} bind:duration={duration} bind:showExport={showExport} />
+  <ExportVideo bind:playing={playing} bind:duration={duration} bind:framerate={framerate} bind:showExport={showExport} />
   </div>
     {/if}
 
@@ -45,7 +45,8 @@ import ExportVideo from './components/ExportVideo.svelte'
 
 let showExport = false;
 let playing = false;
-let duration = 30000;
+let duration = 5000;
+let framerate = 20;
 
 
 function play(){

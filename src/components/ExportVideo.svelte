@@ -8,30 +8,23 @@
 	  </div>
 	  <div class="modal-body">
 	
-			
-			
-			
-			
-		
+	
 			<div class="text-center" id="videotape">
-			<img src="img/videotape.png" class="img-fluid w-50" />
+			<img src="img/videotape.png" class="img-fluid w-50 videotape" />
 		</div>
-		
-			
-		
 	
 			<div id="video-preview" class="ratio ratio-16x9" style="display: none">
 			<video id="output-video" controls width="752" height="423"></video>
 			</div>
-			
-			
-		
-		  
+	  
 	  </div>
 	  <div class="modal-footer">
 		  
-		 
+		  
+		  {#if converting}
+		 <img src="img/loading.png" class="spinner spin" />
 		  <span id="message" class="message me-auto">{message}</span>
+		  {/if}
 		
 		 
 		  <a class="btn btn-success" id="download" download="myvid.mp4" style="display: none;">Download</a>
@@ -56,6 +49,7 @@
 	export let showExport;
 	export let playing;
 	export let duration;
+	export let framerate;
 	
 	let message = "";
 	let start = "Generate Video"
@@ -84,15 +78,19 @@
 	
 	function recordVideo(){
 		
+		console.log("duration: "+duration+", framerate: "+framerate)
+		
 	message = 'Recording...';	
 		
 	  playing = true;
 	  recording = true;
+	  converting = true;
+	  start = ' &nbsp;Converting...'
 	  
 	 interval = setInterval(function() {
 	   // method to be executed;
 	   grabFrame();
-	 }, 40); // 25 fps
+	 }, Math.round(1000/framerate)); // fps
 	 
 	 setTimeout(()=>{
 		 
@@ -126,8 +124,7 @@
 
 	const image2video = async () => {
 		
-		converting = true;
-		
+	
 	    const video = document.getElementById('output-video');
 		video.style.display = 'none';
 		
@@ -142,8 +139,7 @@
 		
 		
 		
-		
-	  start = ' &nbsp;Converting...'
+	
 
 	  // message = 'Loading images...';
 	  
@@ -152,7 +148,7 @@
 	  }
 	  
 	  
-	  message = 'Rendering.';
+	  message = 'Rendering...';
 	  // ffmpeg.FS('writeFile', 'audio.ogg', await fetchFile('assets/triangle/audio.ogg'));
 	  
 	  var i = 0;
@@ -166,7 +162,7 @@
 
 	  
 	  message = 'Creating video... This may take a while.';
-	  await ffmpeg.run('-framerate', '25', '-pattern_type', 'glob', '-i', '*.jpg', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', 'out.mp4');
+	  await ffmpeg.run('-framerate', ''+framerate+'', '-pattern_type', 'glob', '-i', '*.jpg', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', 'out.mp4');
 	   
 	  // -framerate -> set input framerate
 	  // -r -> set output framerate
@@ -221,5 +217,24 @@
 		  background-color: #DFE6EA;
 	  }
 	  
+	  .spinner{
+		  width: 25px;
+	  }
+	  
+	  .spin{
+		  		
+			-webkit-animation:spin 4s linear infinite;
+			-moz-animation:spin 4s linear infinite;
+			animation:spin 4s linear infinite;		  
+				  
+				 
+	  }
+	  
+	  @keyframes spin { 
+			100% { 
+				-webkit-transform: rotate(360deg); 
+				transform:rotate(360deg); 
+			} 
+		}
 	 
   </style>
