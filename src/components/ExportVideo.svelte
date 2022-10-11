@@ -35,7 +35,7 @@
 		
 		 
 		  <a class="btn btn-success" id="download" download="myvid.mp4" style="display: none;">Download</a>
-	<button id="start-btn" class="btn btn-primary" on:click={image2video}>{@html start}</button> 
+	<button id="start-btn" class="btn btn-primary" on:click={recordVideo}>{@html start}</button> 
 		
 	  </div>
 	</div>
@@ -47,13 +47,69 @@
   
   <script>
   
+  import * as htmlToImage from 'html-to-image';
+  import { toPng, toJpeg, toBlob } from 'html-to-image';
   
-  	export let frames;
+  
+  
 	export let showExport;
+	export let playing;
+	export let duration;
+	
 	let message = "";
 	let start = "Generate Video"
 	let converting = false;
 	let done = false;
+	
+	let recording = false;
+	let frames = [];
+	let interval;
+	
+	
+	function grabFrame(){
+	  var node = document.getElementById('stage');
+	  
+	  htmlToImage.toJpeg(node)
+		.then(function (dataUrl) {
+		  //var img = new Image();
+		  //img.src = dataUrl;
+		  // document.getElementById('result').appendChild(img);
+		  frames.push(dataUrl)
+		})
+		.catch(function (error) {
+		  console.error('oops, something went wrong!', error);
+		});
+	}
+	
+	function recordVideo(){
+		
+	message = 'Recording...';	
+		
+	  playing = true;
+	  recording = true;
+	  
+	 interval = setInterval(function() {
+	   // method to be executed;
+	   grabFrame();
+	 }, 100); // 10 fps
+	 
+	 setTimeout(()=>{
+		 
+	   recording = false;
+	   playing = false;
+	   clearInterval(interval);
+	   
+	   
+	   image2video();
+	   
+	   
+	 }, duration)
+	}
+	
+	function stopRecording(){
+	   clearInterval(interval);
+	}
+
 
 	
 	const {
