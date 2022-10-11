@@ -45,7 +45,7 @@ import ExportVideo from './components/ExportVideo.svelte'
 
 let showExport = false;
 let playing = false;
-let duration = 4000;
+let duration = 30000;
 
 
 function play(){

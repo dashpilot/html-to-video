@@ -92,7 +92,7 @@
 	 interval = setInterval(function() {
 	   // method to be executed;
 	   grabFrame();
-	 }, 100); // 10 fps
+	 }, 40); // 25 fps
 	 
 	 setTimeout(()=>{
 		 
