@@ -46,6 +46,7 @@
 
   
   <script>
+ 
   
   import * as htmlToImage from 'html-to-image';
   import { toPng, toJpeg, toBlob } from 'html-to-image';
@@ -142,16 +143,16 @@
 		
 		
 		
-	  start = '<i class="fas fa-spinner fa-spin"></i> &nbsp;Converting...'
+	  start = ' &nbsp;Converting...'
 
-	  message = 'Loading images...';
+	  // message = 'Loading images...';
 	  
 	  if(!ffmpeg.isLoaded()){
 		  await ffmpeg.load();
 	  }
 	  
 	  
-	  message = 'Rendering. This may take a while...';
+	  message = 'Rendering.';
 	  // ffmpeg.FS('writeFile', 'audio.ogg', await fetchFile('assets/triangle/audio.ogg'));
 	  
 	  var i = 0;
