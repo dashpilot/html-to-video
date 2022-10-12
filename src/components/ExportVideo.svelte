@@ -70,12 +70,14 @@
 	let message = "";
 	
 	let frames = [];
-	let interval;
+	let myInterval;
 	let timeout;
 	
 	
 	function grabFrame(){
 	  var node = document.getElementById('stage');
+	  
+	  console.log('grabbing frame')
 	  
 	  htmlToImage.toJpeg(node)
 		.then(function (dataUrl) {
@@ -100,16 +102,17 @@
 	
 		
 	  	
-	 	interval = setInterval(function() {
+	 	myInterval = setInterval(function() {
 		playing = true;
 	   	// method to be executed;
 	   	grabFrame();
+		   
 	 	}, Math.round(1000/framerate)); // fps
 	 	
 	 	timeout = setTimeout(()=>{
 		 	
 		 	playing = false;
-	   	clearInterval(interval);
+	   	clearInterval(myInterval);
 	   	image2video();
 	   	
 	 	}, duration)
@@ -117,7 +120,7 @@
 	
 	function stopRecording(){
 		
-	   clearInterval(interval);
+	   clearInterval(myInterval);
 	   clearTimeout(timeout);
 	   playing = false;
 	   status = 'idle'
