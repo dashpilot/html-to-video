@@ -91,14 +91,17 @@
 	
 	function recordVideo(){
 		
+		playing = false;
+		
 		console.log("duration: "+duration+", framerate: "+framerate)
 		
 		status = 'recording'
 		message = 'Recording...';	
 	
-		playing = true;
+		
 	  	
 	 	interval = setInterval(function() {
+		playing = true;
 	   	// method to be executed;
 	   	grabFrame();
 	 	}, Math.round(1000/framerate)); // fps
