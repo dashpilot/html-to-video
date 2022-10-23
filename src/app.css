@@ -30,7 +30,7 @@ a:hover {
 }
 
 .backdrop {
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 0);
   position: fixed;
   top: 0;
   left: 0;
@@ -109,4 +109,20 @@ img {
   .caption {
     display: none;
   }
+}
+
+.carousel-item {
+  transition: transform 1.5s ease-in-out;
+}
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+  transition: opacity 0s 1.5s;
+}
+
+.hardcut {
+  transition: opacity 0s !important;
+}
+
+.slomo {
+  transition: opacity 3s !important;
 }

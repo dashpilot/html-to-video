@@ -12,7 +12,7 @@
   <div class="btn-group w-100">
 	
 	{#if playing}
-	  <button class="btn btn-outline-dark w-50" on:click={stop}><Fa icon={faStop} /><span class="caption"> stop</span></button>
+	  <button class="btn btn-outline-dark w-50" on:click={pause}><Fa icon={faPause} /><span class="caption"> pause</span></button>
 	{:else}
 	  <button class="btn btn-outline-dark w-50" on:click={play}><Fa icon={faPlay} /><span class="caption"> play</span></button>
 	{/if}
@@ -42,7 +42,7 @@
 <script>
 
 import Fa from 'svelte-fa/src/fa.svelte'
-import { faPlay, faStop, faCircle, faDownload } from '@fortawesome/free-solid-svg-icons/index.js'
+import { faPlay, faPause, faCircle, faDownload } from '@fortawesome/free-solid-svg-icons/index.js'
 
 import { fade } from 'svelte/transition';
 
@@ -52,17 +52,19 @@ import ExportVideo from './ExportVideo.svelte'
 
 export let playing = false;
 export let duration = 5000;
-let framerate = 20;
+let framerate = 10;
 
 
 let showExport = false;
 
 function play(){
  playing = true;
+ carousel.cycle();
 }
 
-function stop(){
+function pause(){
   playing = false;
+  carousel.pause();
 }
 
 </script>

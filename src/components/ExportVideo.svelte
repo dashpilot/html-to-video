@@ -37,7 +37,7 @@
 		  {/if}
 		  
 		  {#if status == 'rendering'}
-			<a class="btn btn-outline-dark disabled" style="border: 1px solid transparent;">@{framerate}fps</a>
+			<a class="btn btn-outline-dark disabled" style="border: 1px solid transparent;">@25fps</a>
 		  {/if}
 		
 		
@@ -92,6 +92,9 @@
 	}
 	
 	function recordVideo(){
+		
+		const event = new Event('record');
+		document.body.dispatchEvent(event);
 		
 		playing = false;
 		
@@ -163,7 +166,7 @@
 		  console.log(i)
 	  }
 	
-	  await ffmpeg.run('-framerate', ''+framerate+'', '-pattern_type', 'glob', '-i', '*.jpg', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', 'out.mp4');
+	  await ffmpeg.run('-framerate', '20', '-pattern_type', 'glob', '-i', '*.jpg', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', 'out.mp4');
 	   
 	  // -framerate -> set input framerate
 	  // -r -> set output framerate
@@ -194,6 +197,15 @@
 	  message = 'Done!'
 	  
 	  frames = [];
+	  
+	 /*
+	 // set the carousel back to normal speed
+	  document.querySelectorAll('.carousel-item').forEach((el)=>{
+		  el.classList.remove('slomo')
+		
+	  })
+	  document.querySelector("#myCarousel").setAttribute('data-interval', 4000);
+*/
 
 	}
 
