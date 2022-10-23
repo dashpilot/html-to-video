@@ -24,15 +24,16 @@
 	   </div>
 	   
 	   
-	   
+	  <!-- 
 	   <div slot="editor">
 		   
 	
-		   
+		 
 		   <button class="btn btn-outline-dark mt-2" on:click={goto}>Test</button>
+	
 		 
 	   </div>
-	   
+	   -->
 	   
 	   
    </Player>

@@ -1,5 +1,18 @@
 
-<div class="wrap mt-3">
+<nav class="navbar navbar-dark bg-dark ps-3">
+  
+  <div class="row w-100">
+	
+	<div class="col-6 brand"><a class="navbar-brand">Zinematic</a></div>
+	<div class="col-6 text-end"><button class="btn btn-success" on:click="{() => showExport = true}">Export Video</button></div>
+  </div>
+  
+  
+</nav>
+
+
+
+<div class="wrap mt-4">
 
  
   <div id="stage" class="stage">
@@ -9,15 +22,14 @@
   </div>
 
   
-  <div class="btn-group w-100">
+  <div class="btn-group">
 	
 	{#if playing}
-	  <button class="btn btn-outline-dark w-50" on:click={pause}><Fa icon={faPause} /><span class="caption"> pause</span></button>
+	  <button class="btn btn-outline-dark w-50" on:click={pause}><Fa icon={faPause} /><span class="caption"> &nbsp;pause</span></button>
 	{:else}
-	  <button class="btn btn-outline-dark w-50" on:click={play}><Fa icon={faPlay} /><span class="caption"> play</span></button>
+	  <button class="btn btn-outline-dark w-50" on:click={play}><Fa icon={faPlay} /><span class="caption"> &nbsp;play</span></button>
 	{/if}
-   
-	<button class="btn btn-outline-dark w-50" on:click="{() => showExport = true}"><Fa icon={faDownload} /><span class="caption"> export video</span></button>
+  
 	</div>
 	
 	<div id="result"></div>
