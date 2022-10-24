@@ -132,7 +132,7 @@ function goto(){
 <style>
 	.carousel-caption{
 		position: absolute;
-		top: 400px;
+		top: 280px;
 		left: 0;
 		bottom: auto;
 		right: auto;

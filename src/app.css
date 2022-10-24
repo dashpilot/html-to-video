@@ -56,12 +56,12 @@ img {
 }
 
 .wrap {
-  width: 960px;
+  width: 720px;
   margin: 20px auto;
 }
 .stage {
-  width: 960px;
-  height: 540px;
+  width: 720px;
+  height: 405px;
   overflow: hidden;
   border: 1px solid black;
   border-top-left-radius: 4px;

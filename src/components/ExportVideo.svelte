@@ -116,6 +116,8 @@
 		 	
 		 	playing = false;
 	   	clearInterval(myInterval);
+		carousel.pause();
+		playing = false;
 	   	image2video();
 	   	
 	 	}, duration)
@@ -128,6 +130,7 @@
 	   playing = false;
 	   status = 'idle'
 	   frames = [];
+	   
 	   
 	}
 
