@@ -56,12 +56,12 @@ img {
 }
 
 .wrap {
-  width: 720px;
+  width: 960px;
   margin: 20px auto;
 }
 .stage {
-  width: 720px;
-  height: 405px;
+  width: 960px;
+  height: 540px;
   overflow: hidden;
   border: 1px solid black;
   border-top-left-radius: 4px;
@@ -124,9 +124,9 @@ img {
 }
 
 .hardcut {
-  transition: opacity 0s !important;
+  transition: all 0s !important;
 }
 
 .slomo {
-  transition: opacity 3s !important;
+  transition: all 3s !important;
 }
